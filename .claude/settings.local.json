@@ -25,7 +25,16 @@
       "Bash(tasklist:*)",
       "Bash(npx playwright test:*)",
       "Bash(git:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Bash(for port in 18805 18848 18998 19076)",
+      "Bash(do echo \"Testing port $port:\")",
+      "Bash(done)",
+      "Bash(docker exec:*)",
+      "Bash(set:*)",
+      "Bash(set PASSWORD=Pass123$)",
+      "Bash(node -e:*)",
+      "Bash(timeout /t 15 /nobreak)",
+      "Bash(timeout 10 dotnet run:*)"
     ]
   }
 }

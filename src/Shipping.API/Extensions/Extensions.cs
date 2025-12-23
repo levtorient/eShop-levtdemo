@@ -9,7 +9,7 @@ internal static class Extensions
         // Add the authentication services to DI
         builder.AddDefaultAuthentication();
 
-        // Add DbContext
+        // Pooling is disabled because ShippingContext has multiple constructors (IMediator dependency)
         services.AddDbContext<ShippingContext>(options =>
         {
             options.UseNpgsql(builder.Configuration.GetConnectionString("shippingdb"));

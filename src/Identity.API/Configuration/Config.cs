@@ -1,4 +1,4 @@
-﻿namespace eShop.Identity.API.Configuration
+namespace eShop.Identity.API.Configuration
 {
     public class Config
     {
@@ -109,7 +109,8 @@
                         "orders",
                         "basket",
                         "webshoppingagg",
-                        "webhooks"
+                        "webhooks",
+                        "shipping"
                     },
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
