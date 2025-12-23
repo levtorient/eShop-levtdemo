@@ -1,4 +1,4 @@
-﻿namespace eShop.Identity.API.Configuration
+namespace eShop.Identity.API.Configuration
 {
     public class Config
     {
@@ -11,6 +11,7 @@
                 new ApiResource("basket", "Basket Service"),
                 new ApiResource("webhooks", "Webhooks registration Service"),
                 new ApiResource("warehouse", "Warehouse Service"),
+                new ApiResource("shipping", "Shipping Service"),
             };
         }
 
@@ -24,6 +25,7 @@
                 new ApiScope("basket", "Basket Service"),
                 new ApiScope("webhooks", "Webhooks registration Service"),
                 new ApiScope("warehouse", "Warehouse Service"),
+                new ApiScope("shipping", "Shipping Service"),
             };
         }
 
@@ -107,7 +109,8 @@
                         "orders",
                         "basket",
                         "webshoppingagg",
-                        "webhooks"
+                        "webhooks",
+                        "shipping"
                     },
                     AccessTokenLifetime = 60*60*2, // 2 hours
                     IdentityTokenLifetime= 60*60*2 // 2 hours
@@ -225,10 +228,51 @@
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "roles",
                         "warehouse",
-                        "orders"
+                        "orders",
+                        "shipping"
                     },
                     AccessTokenLifetime = 60*60*2,
                     IdentityTokenLifetime = 60*60*2
+                },
+                new Client
+                {
+                    ClientId = "shipper-ui",
+                    ClientName = "Shipper UI",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    RequireClientSecret = false,
+                    AllowAccessTokensViaBrowser = true,
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowedCorsOrigins = new List<string>
+                    {
+                        configuration["ShipperUiClient"] ?? "http://localhost:5174",
+                        "http://localhost:5174"
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "roles",
+                        "shipping"
+                    },
+                    AccessTokenLifetime = 60*60*2,
+                    IdentityTokenLifetime = 60*60*2
+                },
+                new Client
+                {
+                    ClientId = "shippingswaggerui",
+                    ClientName = "Shipping Service Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{configuration["ShippingApiClient"] ?? "http://localhost:5000"}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["ShippingApiClient"] ?? "http://localhost:5000"}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "shipping"
+                    }
                 }
             };
         }
