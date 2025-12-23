@@ -2,6 +2,12 @@ import { getAccessToken } from '@/lib/auth';
 import type { Shipment, Shipper, CreateShipperRequest, UpdateShipperRequest, ShipmentStatus } from '@/types/shipping';
 
 const SHIPPING_API_URL = import.meta.env.VITE_SHIPPING_API_URL || '';
+const API_VERSION = '1.0';
+
+function withVersion(url: string): string {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}api-version=${API_VERSION}`;
+}
 
 async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
   const token = await getAccessToken();
@@ -28,34 +34,34 @@ async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Re
 export const shippingApi = {
   // Shipments
   getShipments: async (): Promise<Shipment[]> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments`));
     return response.json();
   },
 
   getShipment: async (id: number): Promise<Shipment> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments/${id}`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments/${id}`));
     return response.json();
   },
 
   getShipmentByOrder: async (orderId: number): Promise<Shipment> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments/order/${orderId}`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments/order/${orderId}`));
     return response.json();
   },
 
   getShipmentsByStatus: async (status: ShipmentStatus): Promise<Shipment[]> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments/status/${status}`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments/status/${status}`));
     return response.json();
   },
 
   assignShipper: async (shipmentId: number, shipperId: number): Promise<void> => {
-    await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments/${shipmentId}/assign-shipper`, {
+    await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments/${shipmentId}/assign-shipper`), {
       method: 'POST',
       body: JSON.stringify({ shipperId }),
     });
   },
 
   cancelShipment: async (shipmentId: number, reason?: string): Promise<void> => {
-    await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shipments/${shipmentId}/cancel`, {
+    await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shipments/${shipmentId}/cancel`), {
       method: 'POST',
       body: JSON.stringify({ reason }),
     });
@@ -63,17 +69,17 @@ export const shippingApi = {
 
   // Shippers
   getShippers: async (): Promise<Shipper[]> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shippers`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shippers`));
     return response.json();
   },
 
   getShipper: async (id: number): Promise<Shipper> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shippers/${id}`);
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shippers/${id}`));
     return response.json();
   },
 
   createShipper: async (data: CreateShipperRequest): Promise<Shipper> => {
-    const response = await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shippers`, {
+    const response = await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shippers`), {
       method: 'POST',
       body: JSON.stringify(data),
     });
@@ -81,14 +87,14 @@ export const shippingApi = {
   },
 
   updateShipper: async (id: number, data: UpdateShipperRequest): Promise<void> => {
-    await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shippers/${id}`, {
+    await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shippers/${id}`), {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
   deleteShipper: async (id: number): Promise<void> => {
-    await fetchWithAuth(`${SHIPPING_API_URL}/api/v1/shippers/${id}`, {
+    await fetchWithAuth(withVersion(`${SHIPPING_API_URL}/api/shippers/${id}`), {
       method: 'DELETE',
     });
   },

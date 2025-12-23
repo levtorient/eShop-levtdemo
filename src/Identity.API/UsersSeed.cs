@@ -70,6 +70,8 @@ public class UsersSeed(
         }
 
         // Seed shipper user
+        // Use a fixed ID so that the Shipping service can reference the same shipper
+        const string shipperId = "a1b2c3d4-e5f6-7890-abcd-ef1234567890";
         var shipper = await userManager.FindByNameAsync("shipper");
         if (shipper == null)
         {
@@ -84,7 +86,7 @@ public class UsersSeed(
                 City = "Seattle",
                 Country = "U.S.",
                 Expiration = "12/25",
-                Id = Guid.NewGuid().ToString(),
+                Id = shipperId,
                 LastName = "Shipper",
                 Name = "Default",
                 PhoneNumber = "1234567890",

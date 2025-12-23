@@ -8,7 +8,7 @@ export const oidcConfig = {
   redirect_uri: `${window.location.origin}/callback`,
   post_logout_redirect_uri: `${window.location.origin}/`,
   response_type: 'code',
-  scope: 'openid profile roles warehouse orders offline_access',
+  scope: 'openid profile roles warehouse orders shipping offline_access',
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   automaticSilentRenew: true,
   silent_redirect_uri: `${window.location.origin}/silent-renew.html`,
@@ -63,7 +63,7 @@ export const loginWithCredentials = async (
       client_id: 'admin-ui',
       username,
       password,
-      scope: 'openid profile roles warehouse orders offline_access',
+      scope: 'openid profile roles warehouse orders shipping offline_access',
     });
 
     const response = await fetch(tokenEndpoint, {

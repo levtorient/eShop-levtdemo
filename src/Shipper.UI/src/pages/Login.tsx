@@ -116,6 +116,10 @@ export function Login() {
                 </>
               )}
             </Button>
+
+            <p className="text-sm text-muted-foreground text-center mt-4">
+              Default shipper: <span className="font-mono">shipper</span> / <span className="font-mono">Shipper123$</span>
+            </p>
           </form>
         </CardContent>
       </Card>
